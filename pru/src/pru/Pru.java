@@ -3,18 +3,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package pru;
+import pru.vistas.AppManager;
 
-/**
- *
- * @author ernes
- */
 public class Pru {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        // Llamar a AppManager
+        AppManager f = new AppManager();
     }
     
 }

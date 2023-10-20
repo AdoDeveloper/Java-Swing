@@ -4,17 +4,51 @@
  */
 package pru.vistas;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import pru.modelos.modeloProductos;
+import pru.controladores.Controlador;
 /**
  *
  * @author ernes
  */
 public class GestionProductos extends javax.swing.JInternalFrame {
 
+    private void Cargar()
+    {
+        pru.controladores.Controlador oProducto = new Controlador();
+        ArrayList<modeloProductos> Lista =new ArrayList<>();  
+        Lista = oProducto.TODOS_LOS_PRODUCTOS();
+        
+        DefaultTableModel modelo=new DefaultTableModel();
+        modelo.addColumn("IDProductos");
+        modelo.addColumn("Nombre Producto");
+        modelo.addColumn("IDCategoria");
+        modelo.addColumn("PrecioUnitario");
+        modelo.addColumn("Existencias");
+        
+        for(modeloProductos producto : Lista)
+        {
+                modelo.addRow(new Object[]{
+                producto.getProductID(),
+                producto.getProductName(),
+                producto.getCategoryID(),
+                producto.getUnitPrice(),
+                producto.getUnitsInStock()
+            });
+        }
+        
+        Datos.setModel(modelo);
+    }
     /**
      * Creates new form GestionProductos
      */
     public GestionProductos() {
         initComponents();
+        Cargar();
     }
 
     /**
@@ -28,8 +62,9 @@ public class GestionProductos extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         btnEliminar = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        Datos = new javax.swing.JTable();
 
         setClosable(true);
         setIconifiable(true);
@@ -37,6 +72,18 @@ public class GestionProductos extends javax.swing.JInternalFrame {
         setResizable(true);
 
         btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
+        btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -45,17 +92,21 @@ public class GestionProductos extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnEliminar)
+                .addGap(18, 18, 18)
+                .addComponent(btnEditar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(11, Short.MAX_VALUE)
-                .addComponent(btnEliminar)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEliminar)
+                    .addComponent(btnEditar))
                 .addContainerGap())
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        Datos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -63,18 +114,18 @@ public class GestionProductos extends javax.swing.JInternalFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 4"
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(Datos);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -99,11 +150,89 @@ public class GestionProductos extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+
+        // Obtener filas seleccionadas en la tabla Datos
+        int[] filasSeleccionadas = Datos.getSelectedRows();
+
+        if (filasSeleccionadas.length > 0) {
+        Controlador oProducto = new Controlador();
+        int eliminacionesExitosas = 0;
+
+        for (int filaSeleccionada : filasSeleccionadas) {
+            int idProducto = (int) Datos.getValueAt(filaSeleccionada, 0); // Suponiendo que el ID del producto está en la primera columna.
+
+            // Obtener los datos del producto a eliminar directamente de la tabla
+            String nombreProducto = Datos.getValueAt(filaSeleccionada, 1).toString(); // Segunda columna
+            double precioUnitario = (double) Datos.getValueAt(filaSeleccionada, 3); // Tercer columna
+            int existencias = (int) Datos.getValueAt(filaSeleccionada, 4); // Cuarta columna
+
+            // Crear un mensaje personalizado para confirmar la eliminación
+            String mensajeConfirmacion = "¿Desea eliminar el siguiente producto?\n\n"
+                    + "ID: " + idProducto + "\n"
+                    + "Nombre: " + nombreProducto + "\n"
+                    + "Precio Unitario: " + precioUnitario + "\n"
+                    + "Existencias: " + existencias + "\n\n"
+                    + "Esta acción no se puede deshacer.";
+
+            int confirmacion = JOptionPane.showConfirmDialog(this, mensajeConfirmacion, "Eliminar Producto", JOptionPane.YES_NO_OPTION);
+
+            // Verificar la respuesta del usuario
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                // El usuario ha confirmado la eliminación, puedes utilizar el ID del producto para eliminarlo
+                int filasAfectadas = oProducto.eliminar(idProducto);
+
+                if (filasAfectadas > 0) {
+                    // Eliminación exitosa, incrementar el contador
+                    eliminacionesExitosas++;
+                }
+            }
+        }
+
+        // Actualizar la tabla después de eliminar los productos
+        Cargar();
+
+        if (eliminacionesExitosas > 0) {
+            JOptionPane.showMessageDialog(this, eliminacionesExitosas + " producto eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo eliminar ningún producto.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        } else {
+        // Si no se selecciona ninguna fila, mostrar un mensaje de error
+        JOptionPane.showMessageDialog(this, "Por favor, seleccione un producto de la lista para eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // Obtener la fila seleccionada en la tabla Datos
+        int filaSeleccionada = Datos.getSelectedRow();
+
+        if (filaSeleccionada != -1) { // Verifica si se seleccionó una fila
+        int idProducto = (int) Datos.getValueAt(filaSeleccionada, 0); // Suponiendo que el ID del producto está en la primera columna.
+
+        // Crear una instancia del formulario de edición y pasar el ID del producto
+        ActualizarProducto formularioEdicion = new ActualizarProducto(idProducto, true);
+        formularioEdicion.setVisible(true);
+
+        formularioEdicion.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                Cargar(); // Recargar la tabla cuando se cierre la ventana de edición
+            }
+        });
+        
+        } else {
+        // Si no se selecciona ninguna fila, mostrar un mensaje de error
+        JOptionPane.showMessageDialog(this, "Por favor, seleccione un producto de la lista para editar.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable Datos;
+    private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

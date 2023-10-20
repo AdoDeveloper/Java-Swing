@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
  * @author ernes
  */
 public class GestionProducto extends javax.swing.JInternalFrame {
-private void Cargar()
+    private void Cargar()
     {
         crud.controladores.CrudControlador oProducto=new CrudControlador();
         ArrayList<modeloProductos> Productos=new ArrayList<>();  
@@ -162,7 +162,7 @@ private void Cargar()
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
 
-        // Obtener filas seleccionadas en la tabla Datos
+    // Obtener filas seleccionadas en la tabla Datos
     int[] filasSeleccionadas = Datos.getSelectedRows();
 
     if (filasSeleccionadas.length > 0) {

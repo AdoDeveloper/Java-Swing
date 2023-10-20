@@ -31,7 +31,9 @@ public class Conexion {
             Conectado=false;
         }
         return Conectado;
-}
+        }
+        
+        
         protected void Desconectar()
         {
         try

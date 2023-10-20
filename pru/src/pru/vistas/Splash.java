@@ -4,10 +4,14 @@
  */
 package pru.vistas;
 
-/**
- *
- * @author ernes
- */
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
+import javax.swing.Timer;
+
 public class Splash extends javax.swing.JDialog {
 
     /**
@@ -16,6 +20,32 @@ public class Splash extends javax.swing.JDialog {
     public Splash(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+
+        // Centrar la ventana en el medio de la pantalla
+        Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+        int height = pantalla.height;
+        int width = pantalla.width;
+        setLocation((width - getWidth()) / 2, (height - getHeight()) / 2);
+        
+        // Cargar la imagen
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource("/pru/img/splash.jpg"));
+        
+        // Obtener la imagen y ajustarla al tamaño del JLabel
+        Image image = imageIcon.getImage();
+        Image newImage = image.getScaledInstance(lbImagen.getWidth(), lbImagen.getHeight(), Image.SCALE_SMOOTH);
+        
+        // Crear un nuevo ImageIcon con la imagen escalada
+        ImageIcon scaledIcon = new ImageIcon(newImage);
+        
+        lbImagen.setIcon(scaledIcon);
+        
+        // Iniciar el temporizador después de configurar la imagen
+        Timer cronometro = new Timer(3000, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
+        cronometro.start(); // Iniciar el temporizador
     }
 
     /**
