@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package crud.controladores;
+package region.controladores;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,7 +23,6 @@ public class Conexion {
             Class.forName("com.mysql.cj.jdbc.Driver");
             _connexion = (Connection) DriverManager.getConnection(URL, oConfiguracion.getUsuario(), oConfiguracion.getClave());
             Conectado=true;
-            System.out.println("Conexion abierta");
         }
         catch(Exception e)
         {
@@ -31,20 +30,5 @@ public class Conexion {
             Conectado=false;
         }
         return Conectado;
-}
-        protected void Desconectar()
-        {
-        try
-        {
-            if (_connexion != null && !_connexion.isClosed())
-            {
-            _connexion.close();
-            System.out.println("Conexion cerrada");
-            }
-        }
-        catch (Exception e)
-        {
-            System.out.println("Error al cerrar la conexion: " + e.getMessage());
-        }
-    }
+}    
 }

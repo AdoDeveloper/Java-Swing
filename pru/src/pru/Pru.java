@@ -2,18 +2,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-package crud;
-import crud.vistas.AppManager;
-import crud.vistas.GestionProductos;
+package pru;
 
-public class Crud {
+/**
+ *
+ * @author ernes
+ */
+public class Pru {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        AppManager f = new AppManager();
     }
     
 }

@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package crud.modelos;
+package pru.modelos;
 
-public class modeloProductos{
-    
+public class modeloProductos {
+
     private int ProductID;
     private String ProductName;
     private int SupplierID;
@@ -77,8 +77,8 @@ public class modeloProductos{
         return UnitsOnOrder;
     }
 
-    public void setUnitsOnOrder(int UnitsOnOrde) {
-        this.UnitsOnOrder = UnitsOnOrde;
+    public void setUnitsOnOrder(int UnitsOnOrder) {
+        this.UnitsOnOrder = UnitsOnOrder;
     }
 
     public int getReorderLevel() {
@@ -96,5 +96,5 @@ public class modeloProductos{
     public void setDiscontinued(int Discontinued) {
         this.Discontinued = Discontinued;
     }
-    
+
 }
