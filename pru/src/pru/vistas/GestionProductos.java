@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import pru.modelos.modeloProductos;
 import pru.controladores.Controlador;
+import pru.vistas.AgregarProductos;
 /**
  *
  * @author ernes
@@ -239,7 +240,15 @@ public class GestionProductos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        AgregarProductos f = new AgregarProductos( true);
+        f.setVisible(true);
         
+        f.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                Cargar(); // Recargar la tabla cuando se cierre la ventana de edición
+            }
+        });
     }//GEN-LAST:event_btnAgregarActionPerformed
 
 

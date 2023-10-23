@@ -12,8 +12,7 @@ public class AgregarProductos extends javax.swing.JDialog {
     /**
      * Creates new form AgregarProductos
      */
-    public AgregarProductos(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public AgregarProductos(boolean modal) {
         initComponents();
     }
 
@@ -237,11 +236,11 @@ public class AgregarProductos extends javax.swing.JDialog {
                                 pedido,minimo,descontinuado);
 
         if (filasAfectadas > 0) {
-            JOptionPane.showMessageDialog(this, "Producto actualizado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Producto insertado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             // Cierra la ventana ActualizarProductos sin afectar la ventana principal
             dispose();
         } else {
-            JOptionPane.showMessageDialog(this, "No se pudo actualizar el producto.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No se pudo insertar el producto.", "Error", JOptionPane.ERROR_MESSAGE);
         }
         } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(this, "Asegúrese de ingresar valores numéricos válidos en los campos de ID de producto, ID de categoría, precio unitario y existencia.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -275,22 +274,8 @@ public class AgregarProductos extends javax.swing.JDialog {
             java.util.logging.Logger.getLogger(AgregarProductos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                AgregarProductos dialog = new AgregarProductos(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnCancelar;
