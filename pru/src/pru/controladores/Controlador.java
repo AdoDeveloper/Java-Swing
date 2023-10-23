@@ -107,4 +107,44 @@ public class Controlador extends Conexion{
     
     return FilasAfectadas;
     }
+    
+    //Método para insertar
+    public int insertar(String productName,int supplierID, int categoryID, 
+                        String quantityPerUnit, double unitPrice, int unitsInStock,
+                        int unitsOnOrder,int reorderLevel, int discontinued) {
+    int FilasAfectadas = 0;
+    try {
+        if (super.Conectar()) {
+            String sql = "INSERT INTO products(ProductName,SupplierID, CategoryID,"
+                         + "QuantityPerUnit,UnitPrice, UnitsInStock, UnitsOnOrder, "
+                         + "ReorderLevel, Discontinued) VALUES(?,?,?,?,?,?,?,?,?)";
+            
+            // Usar una PreparedStatement para evitar problemas de seguridad
+            PreparedStatement pstmt = super._connexion.prepareStatement(sql);
+            pstmt.setString(1, productName);
+            pstmt.setInt(2, supplierID);
+            pstmt.setInt(3, categoryID);
+            pstmt.setString(4, quantityPerUnit);
+            pstmt.setDouble(5, unitPrice); 
+            pstmt.setInt(6, unitsInStock);
+            pstmt.setInt(7, unitsOnOrder);
+            pstmt.setInt(8, reorderLevel);
+            pstmt.setInt(9, discontinued);
+            
+            // Ejecutar la insercion y obtener el número de filas afectadas
+            FilasAfectadas = pstmt.executeUpdate();
+            
+            // Cierra la declaración y la conexión
+            pstmt.close();
+            super.Desconectar();
+        } else {
+            FilasAfectadas = -1;
+        }
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+        // Aquí simplemente se imprime el stack trace.
+    }
+    
+    return FilasAfectadas;
+    }
 }
