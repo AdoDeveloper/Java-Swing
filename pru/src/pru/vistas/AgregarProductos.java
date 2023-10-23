@@ -4,6 +4,9 @@
  */
 package pru.vistas;
 
+import javax.swing.JOptionPane;
+import pru.controladores.Controlador;
+
 public class AgregarProductos extends javax.swing.JDialog {
 
     /**
@@ -80,6 +83,11 @@ public class AgregarProductos extends javax.swing.JDialog {
         jLabel9.setText("Descontinuado:");
 
         btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -183,8 +191,63 @@ public class AgregarProductos extends javax.swing.JDialog {
     }//GEN-LAST:event_tfCantidadPorUnidadActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        
+        dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+       String nombreProductoText = tfNombreProducto.getText();
+       String proveedorIDText = tfIDProveedor.getText();
+       String categoriaIDText = tfIDCategoria.getText();
+       String cantidadPUText = tfCantidadPorUnidad.getText();
+       String precioUnitarioText = tfPrecioUnitario.getText();
+       String stockText = tfStock.getText();
+       String pedidoText = tfPedidos.getText();
+       String minimoText = tfExistenciaMinima.getText();
+       String descontinuadoText = tfDescontinuado.getText();
+       
+       if (nombreProductoText.isEmpty() || 
+            proveedorIDText.isEmpty() || 
+            categoriaIDText.isEmpty() || 
+            cantidadPUText.isEmpty() || 
+            precioUnitarioText.isEmpty() || 
+            stockText.isEmpty() || 
+            pedidoText.isEmpty() || 
+            minimoText.isEmpty() || 
+            descontinuadoText.isEmpty()){
+            
+            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;  // Sale del método si falta algún dato
+       }else{
+           try {
+        // Intenta convertir las cadenas en números
+        String nombreProducto = tfNombreProducto.getText();
+        int proveedorID = Integer.parseInt(tfIDProveedor.getText());
+        int categoriaID = Integer.parseInt(tfIDCategoria.getText());
+        String cantidadPU = tfCantidadPorUnidad.getText();
+        double precioUnitario = Double.parseDouble(tfPrecioUnitario.getText());
+        int stock = Integer.parseInt(tfStock.getText());
+        int pedido = Integer.parseInt(tfPedidos.getText());
+        int minimo = Integer.parseInt(tfExistenciaMinima.getText());
+        int descontinuado = Integer.parseInt(tfDescontinuado.getText());
+
+        // Llama a un método en CrudControlador para actualizar el producto
+        Controlador oProducto = new Controlador();
+        int filasAfectadas = oProducto.insertar(nombreProducto,proveedorID, 
+                                categoriaID,cantidadPU,precioUnitario,stock,
+                                pedido,minimo,descontinuado);
+
+        if (filasAfectadas > 0) {
+            JOptionPane.showMessageDialog(this, "Producto actualizado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            // Cierra la ventana ActualizarProductos sin afectar la ventana principal
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo actualizar el producto.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Asegúrese de ingresar valores numéricos válidos en los campos de ID de producto, ID de categoría, precio unitario y existencia.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+       }
+    }//GEN-LAST:event_btnAgregarActionPerformed
 
     /**
      * @param args the command line arguments
